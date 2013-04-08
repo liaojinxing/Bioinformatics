@@ -1,0 +1,9 @@
+The original data are published by the TCMGeneDIT team (http://tcm.lifescience.ntu.edu.tw/), available as tab delimiter files. They are distributed under the terms of the Creative Commons Attribution License, given proper citation to the original work published in BMC Complementary and Alternative Medicine [doi:10.1186/1472-6882-8-58]. 
+
+The conversion of this dataset into RDF was supported by Jun Zhao. Please contact Jun for support or any mistakes in the RDF dataset.
+
+Documentation and example queries to this dataset can be found at: http://code.google.com/p/junsbriefcase/wiki/TGDdataset.
+
+New feature since R2:
+* Updated the model for describing the statistic confidence of the associations between entities (such as genes, diseases and herbs)
+* Updated the model for describing the association between genes, diseases and herbs in order to assist queries for these relationships 
