@@ -5,7 +5,14 @@ import com.hp.hpl.jena.util.FileManager;
 import java.io.*;
 
 public class DataSourcePreprocess {
-		
+	/**
+	 * convert rdf file to triple
+	 * @param filePath
+	 * @param fileName
+	 * @param propFilter
+	 * @param reverseSubObj
+	 * @throws IOException
+	 */
 	public static void ConvertFileToTriple(String filePath, String fileName, String propFilter, boolean reverseSubObj) throws IOException{
 		String inputFile = filePath + fileName;
 		Model model = ModelFactory.createDefaultModel();
@@ -43,9 +50,9 @@ public class DataSourcePreprocess {
 	}
 		
 	public static void main(String[] args) throws IOException{
-		String path = "/home/ljx/thesis/data/BioTCM ‰»Î/TCMGeneDIT/";
-		String fileName = "TCM_gene_associations_statistics.rdf";
-		String treatment = "http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/association";
-		ConvertFileToTriple(path, fileName, treatment, true);
+		String path = "/home/ljx/thesis/data/";
+		String fileName = "rulechain";
+		String treatment = "";
+		ConvertFileToTriple(path, fileName, treatment, false);
 	}
 }
