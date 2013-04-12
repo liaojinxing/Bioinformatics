@@ -50,9 +50,9 @@ public class DataSourcePreprocess {
 	}
 		
 	public static void main(String[] args) throws IOException{
-		String path = "/home/ljx/thesis/data/";
-		String fileName = "rulechain";
-		String treatment = "";
+		String path = "/home/ljx/";
+		String fileName = "HumanDOr21.owl";
+		String treatment = "http://www.w3.org/2000/01/rdf-schema#label";
 		ConvertFileToTriple(path, fileName, treatment, false);
 	}
 }
