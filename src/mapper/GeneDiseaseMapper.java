@@ -18,8 +18,10 @@ public class GeneDiseaseMapper extends Mapper<Object, Text, Text, Text>{
 //		System.err.println(value.toString());
 		Triple triple=TripleTool.parseLineToTriple(value.toString());
 		//get the index of the predicate of the triple
-		if(triple==null)
-			System.out.println("----------------------------------------hehe,null");
+		if(triple==null){
+			//System.out.println("----------------------------------------hehe,null");
+			return;
+		}
 		int pIndex=OWLRuleChainUtil.getIndexByPredicate(triple.getPredicate());
 		if(pIndex==-1)
 			return;

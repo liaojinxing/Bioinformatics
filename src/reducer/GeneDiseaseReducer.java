@@ -98,13 +98,16 @@ public class GeneDiseaseReducer extends Reducer<Text, Text, NullWritable, Text> 
 				return;
 			}
 			
+			/*if the predicate's index is even, add the subject to subjectset
+			 * if it is odd, add the object to objectset */
 			if (current==0) {
 				subjectURIs.add(triple.getSubject());
 			} else {
 				objectURIs.add(triple.getObject());
 			}
 		}
-					
+				
+		/*join the two adjacent predicate to construct the produced predicate*/
 		String outputPredicate = (current == 0) ? OWLRuleChainUtil.getPredicateByIndex(index)+"$$"+OWLRuleChainUtil
 				.getPredicateByIndex(index + 1) : OWLRuleChainUtil
 				.getPredicateByIndex(index - 1)+"$$"+OWLRuleChainUtil.getPredicateByIndex(index);

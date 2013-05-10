@@ -26,11 +26,13 @@ public class GeneDiseaseReasoner {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args)
 				.getRemainingArgs();
-		if (otherArgs.length != 2) {
+		/*if (otherArgs.length != 2) {
 			System.err.println("Usage: GeneDiseaseReasoner <in> <out>");
 			System.exit(2);
-		}
-
+		}*/
+		
+		long startTime = System.currentTimeMillis();
+		
 		Job job = null;
 		int iterationNum=0;
 		int predicateNum=OWLRuleChainUtil.getPredicateNum();
@@ -45,9 +47,11 @@ public class GeneDiseaseReasoner {
 			job.setOutputKeyClass(NullWritable.class);
 			job.setOutputValueClass(Text.class);
 
+			job.setNumReduceTasks(predicateNum);
+			
 			String inputPath="";
 			if(iterationNum==0){
-				inputPath=otherArgs[0];
+				inputPath=otherArgs[1];
 			}else{
 				inputPath="outputowl"+(iterationNum-1);
 			}
@@ -55,7 +59,7 @@ public class GeneDiseaseReasoner {
 
 			String outputPath="";
 			if(predicateNum==2){
-				outputPath=otherArgs[1];
+				outputPath=otherArgs[2];
 			}else{
 				outputPath="outputowl"+iterationNum++;
 			}
@@ -63,10 +67,14 @@ public class GeneDiseaseReasoner {
 
 			FileSystem.get(job.getConfiguration()).delete(new Path(outputPath), true);
 			job.waitForCompletion(true);
-			predicateNum=OWLRuleChainUtil.updatePredicateArr();
+			//predicateNum=OWLRuleChainUtil.updatePredicateArr();
+			predicateNum=OWLRuleChainUtil.updatePredicateArrIntoFile();
+			OWLRuleChainUtil.RefreshRuleList();
 			System.out.println(predicateNum);
 			System.out.println(OWLRuleChainUtil.getPredicateByIndex(0));
 		}
+		long endTime = System.currentTimeMillis();
+		System.out.println("use time:" + (endTime - startTime));
 
 	}
 

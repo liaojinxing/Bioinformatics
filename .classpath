@@ -65,5 +65,6 @@
 	<classpathentry kind="lib" path="/home/ljx/下载/apache-jena-2.10.0/lib-src/jena-core-2.10.0-sources.jar"/>
 	<classpathentry kind="lib" path="/home/ljx/下载/apache-jena-2.10.0/lib-src/jena-iri-0.9.5-sources.jar"/>
 	<classpathentry kind="lib" path="/home/ljx/下载/apache-jena-2.10.0/lib-src/jena-tdb-0.10.0-sources.jar"/>
+	<classpathentry kind="lib" path="/home/ljx/thesis/virtjdbc4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
