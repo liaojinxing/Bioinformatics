@@ -2,7 +2,7 @@ package utils;
 
 public class TripleTool {
 	public static Triple parseLineToTriple(String line){
-		String[] resources = line.split("\t");
+		String[] resources = line.split("\\s+");
 		if(resources.length == 3){
 			String subject = resources[0];
 			String predicate = resources[1];
