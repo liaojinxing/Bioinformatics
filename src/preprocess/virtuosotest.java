@@ -55,11 +55,14 @@ public class virtuosotest {
 			Connection conn = DriverManager.getConnection(url);
 			Statement stmt = conn.createStatement();
 			
-			for(String graphName:graphNameList){
-				ResultSet rs = stmt.executeQuery("SPARQL select * from <"+graphPrefix+graphName+"> where {?s ?p ?o}");
+	//		for(String graphName:graphNameList){
+				String sql = "SPARQL SELECT distinct ?h WHERE {<http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/id/medicine/Ganoderma_lucidum> <http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/treatment> ?b . ?b <http://www.w3.org/2002/07/owl#sameAs> ?c .?c <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/possibleDrug> ?d .?d <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/target> ?e .?e <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/swissprotId> ?f .?f <http://purl.uniprot.org/core/classifiedWith> ?g .?g <http://www.ccnt.org/symbol> ?h.};";
+				ResultSet rs = stmt.executeQuery(sql);
+				//ResultSet rs = stmt.executeQuery("SPARQL select * from <"+graphPrefix+graphName+"> where {?s ?p ?o}");
 				String filePrefix = "/home/ljx/thesis/reason_data/";
-				prnRs(rs, filePrefix + graphName);
-			}
+				prnRs(rs, "/home/ljx/thesis/reason_data/lingzhi");
+			//	prnRs(rs, filePrefix + graphName);
+		//	}
 			
 		}catch (Exception e) {
 			System.out.println(e.toString());

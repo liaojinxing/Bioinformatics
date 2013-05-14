@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OWLRuleChainUtil {
-	//private static String LOCALFILE="/user/ljx/rulechain";
-	//private static String LOCALHDFS="hdfs://localhost:9000";
+	private static String LOCALFILE="/user/ljx/rulechain";
+	private static String LOCALHDFS="hdfs://localhost:9000";
 	
 	private static String CLUSTERFILE="/user/root/rulechain";
-	private static String CLUSTERHDFS="hdfs://192.168.0.207:9000";
+	private static String CLUSTERHDFS="hdfs://192.168.0.236:9000";
 	
 	private static String hdfsAddr=CLUSTERHDFS;
 	private static String rulechainFileAddr=CLUSTERFILE;
@@ -110,7 +110,7 @@ public class OWLRuleChainUtil {
 	}
 	
 	
-	public static int updatePredicateArrIntoFile() {
+	public static void updatePredicateArrIntoFile() {
 		int size=ruleChainLst.size();
 		String writeCon="";
 		for(int i=0;i<size;i=i+2){
@@ -126,7 +126,7 @@ public class OWLRuleChainUtil {
 		}
 		//更新完后，写回文件，为下一次job做准备
 		owlFSTool.writeFile(rulechainFileAddr, writeCon);
-		return ruleChainLst.size();
+		//return ruleChainLst.size();
 	}
 	
 	//由index得到相应的predicate

@@ -22,7 +22,7 @@ public class TrigProducer {
 		
 		String line = "";
 		while((line=reader.readLine())!=null){
-			String[] elements = line.split("\t");
+			String[] elements = line.split("\\s+");
 			if(elements.length!=3)
 				continue;
 			/*
@@ -40,7 +40,10 @@ public class TrigProducer {
 			elements[0]="<"+elements[0]+">";
 			elements[1]="<"+elements[1]+">";
 			elements[2]="<"+elements[2]+">";
-			
+			if(elements[2].contains("\\")){
+				System.out.println(elements[2]);
+				continue;
+			}
 			bw.write("\t"+elements[0]+" "+elements[1]+" "+elements[2]+" .");
 			bw.newLine();
 		}
@@ -54,8 +57,10 @@ public class TrigProducer {
 	}
 
 	public static void main(String[] args) throws IOException{
-		UniProtTrigProducer("","/home/ljx/thesis/data/uniprot_protein_gene_mapping");
-
+		for(int i = 2;i<8;i++){
+			UniProtTrigProducer("http://localhost:8890/TCMGeneDIT","/home/ljx/thesis/reason_data/TCMGeneDIT_triple");
+			System.out.println(i);
+		}
 	}
 	
 	

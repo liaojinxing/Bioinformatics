@@ -159,6 +159,42 @@ public class DataSourcePreprocess {
 		reader.close();
 	}
 	
+	public static void SplitFile(String srcFile, long lineCount) throws IOException{
+		File file = new File(srcFile);
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+	
+		String line = null;
+		long count = 0;
+		int iterNum = 0;
+		
+		File outputfile = new File("/home/ljx/thesis/data/symbol_geneid_mapping_triple0");
+		BufferedWriter bw = new BufferedWriter(new FileWriter(outputfile, true));
+//		System.out.println(reader.readLine());
+		do{
+			line=reader.readLine();
+		}while(line!=null&&line.length()>0);
+//		while((line=reader.readLine())!=null){			
+//			bw.write(line);
+//			bw.newLine();
+//			count++;
+//			if(count>lineCount){
+//				bw.flush();
+//				bw.close();
+//				iterNum++;
+//				count = 0;
+//				outputfile = new File("/home/ljx/thesis/data/symbol_geneid_mapping_triple"+iterNum);
+//				bw = new BufferedWriter(new FileWriter(outputfile, true));
+//			}
+			
+//		}
+		
+		bw.flush();
+		bw.close();	
+		reader.close();
+	}
+	
+	
+	
 	public static void main(String[] args) throws IOException{
 		/*String path = "/home/ljx/thesis/data/TCMGeneDIT/";
 		String fileName = "TCM_disease_associations_statistics.rdf";
@@ -171,6 +207,7 @@ public class DataSourcePreprocess {
 		//SimplizeTriple("/home/ljx/thesis/data/TCMGeneDIT/TCM_disease_associations_statistics_triple");
 		//writeMapping("/home/ljx/thesis/data/TCMGeneDIT/TCM_disease_associations_statistics_triple");
 		/*	test5.rdf  test690440.rdf  test3430700.rdf  test5730901.rdf   test8397700.rdf  test8537301.rdf */
-		TranslateFile("/home/ljx/thesis/data/gene_symbol-id-mapping/test8537301.rdf");
+		//TranslateFile("/home/ljx/thesis/data/gene_symbol-id-mapping/test8537301.rdf");
+		SplitFile("/media/文档/uniprot/uniprot_protein_GO_mapping_triple",9000000);
 	}
 }

@@ -1,8 +1,10 @@
 package reducer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.hadoop.io.NullWritable;
@@ -75,7 +77,8 @@ public class GeneDiseaseReducer extends Reducer<Text, Text, NullWritable, Text> 
 		}
 
 	}
-*/
+	*/
+
 	protected void reduce(Text key, Iterable<Text> values,
 			GeneDiseaseReducer.Context context) throws IOException,
 			InterruptedException {
@@ -98,8 +101,8 @@ public class GeneDiseaseReducer extends Reducer<Text, Text, NullWritable, Text> 
 				return;
 			}
 			
-			/*if the predicate's index is even, add the subject to subjectset
-			 * if it is odd, add the object to objectset */
+			//if the predicate's index is even, add the subject to subjectset
+			// if it is odd, add the object to objectset 
 			if (current==0) {
 				subjectURIs.add(triple.getSubject());
 			} else {
@@ -107,7 +110,7 @@ public class GeneDiseaseReducer extends Reducer<Text, Text, NullWritable, Text> 
 			}
 		}
 				
-		/*join the two adjacent predicate to construct the produced predicate*/
+		//join the two adjacent predicate to construct the produced predicate
 		String outputPredicate = (current == 0) ? OWLRuleChainUtil.getPredicateByIndex(index)+"$$"+OWLRuleChainUtil
 				.getPredicateByIndex(index + 1) : OWLRuleChainUtil
 				.getPredicateByIndex(index - 1)+"$$"+OWLRuleChainUtil.getPredicateByIndex(index);
@@ -125,4 +128,5 @@ public class GeneDiseaseReducer extends Reducer<Text, Text, NullWritable, Text> 
 		}
 		
 	}
+	
 }

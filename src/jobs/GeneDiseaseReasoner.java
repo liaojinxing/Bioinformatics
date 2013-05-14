@@ -47,7 +47,7 @@ public class GeneDiseaseReasoner {
 			job.setOutputKeyClass(NullWritable.class);
 			job.setOutputValueClass(Text.class);
 
-			job.setNumReduceTasks(predicateNum);
+			job.setNumReduceTasks(3);
 			
 			String inputPath="";
 			if(iterationNum==0){
@@ -68,7 +68,8 @@ public class GeneDiseaseReasoner {
 			FileSystem.get(job.getConfiguration()).delete(new Path(outputPath), true);
 			job.waitForCompletion(true);
 			//predicateNum=OWLRuleChainUtil.updatePredicateArr();
-			predicateNum=OWLRuleChainUtil.updatePredicateArrIntoFile();
+			OWLRuleChainUtil.updatePredicateArrIntoFile();
+			predicateNum = (predicateNum+1)/2;
 			OWLRuleChainUtil.RefreshRuleList();
 			System.out.println(predicateNum);
 			System.out.println(OWLRuleChainUtil.getPredicateByIndex(0));
