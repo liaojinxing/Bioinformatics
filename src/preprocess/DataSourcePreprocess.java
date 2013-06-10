@@ -5,8 +5,6 @@ import com.hp.hpl.jena.util.FileManager;
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +15,7 @@ public class DataSourcePreprocess {
 	static HashMap<String, Long> medicineSet = new HashMap<String, Long>();
 	
 	/**
-	 * convert rdf file to triple
+	 * Use Jena to convert rdf file to triple
 	 * @param filePath
 	 * @param fileName
 	 * @param propFilter
@@ -61,6 +59,11 @@ public class DataSourcePreprocess {
 		bw.close();
 	}
 		
+	/***
+	 * delete prefix, get the simple format triple
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public static void SimplizeTriple(String fileName) throws IOException{
 		File file = new File(fileName);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -103,28 +106,13 @@ public class DataSourcePreprocess {
 		bw.close();
 				
 	}
-	
-	public static void writeMapping(String fileName) throws IOException{
-		File mappingFile = new File(fileName+"_mapping");
-		BufferedWriter mappingWriter = new BufferedWriter(new FileWriter(mappingFile));
-		Iterator<Map.Entry<String, Long>> iter = medicineSet.entrySet().iterator();
-		while (iter.hasNext()) {
-		    Map.Entry entry = (Map.Entry) iter.next();
-		    mappingWriter.write("med:"+entry.getKey()+":"+entry.getValue());
-		    mappingWriter.newLine();
-		} 
-		Iterator<Map.Entry<String, Long>> disIter = diseaseSet.entrySet().iterator();
-		while (disIter.hasNext()) {
-		    Map.Entry entry = (Map.Entry) disIter.next();
-		    mappingWriter.write("dis:"+entry.getKey()+":"+entry.getValue());
-		    mappingWriter.newLine();
-		}
-		
-		mappingWriter.flush();
-		mappingWriter.close();	
-	}	
-	
-	public static void TranslateFile(String fileName) throws IOException {
+
+	/***
+	 * Use Regular Express to process file
+	 * @param fileName
+	 * @throws IOException
+	 */
+	public static void RegularTranslateFile(String fileName) throws IOException {
 		File file = new File(fileName);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -133,11 +121,6 @@ public class DataSourcePreprocess {
 		
 		String line = "";
 		
-	/*	
-		<rdf:Description rdf:about="http://biotcm_cloud/gene/8397766">
-	    <owl:sameAs>http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/id/gene/Apre_0980</owl:sameAs>
-	  </rdf:Description>
-	  */  
 		while((line=reader.readLine())!=null){
 			Pattern pattern = Pattern.compile("<rdf:Description rdf:about=.*>");
 			Matcher matcher = pattern.matcher(line);
@@ -159,55 +142,27 @@ public class DataSourcePreprocess {
 		reader.close();
 	}
 	
-	public static void SplitFile(String srcFile, long lineCount) throws IOException{
+	/***
+	 * count the triple number of a graph
+	 * @param srcFile
+	 * @throws IOException
+	 */
+	public static void CountTriple(String srcFile) throws IOException{
 		File file = new File(srcFile);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 	
 		String line = null;
-		long count = 0;
-		int iterNum = 0;
+		HashSet<String> medicines = new HashSet<String>();
 		
-		File outputfile = new File("/home/ljx/thesis/data/symbol_geneid_mapping_triple0");
-		BufferedWriter bw = new BufferedWriter(new FileWriter(outputfile, true));
-//		System.out.println(reader.readLine());
-		do{
-			line=reader.readLine();
-		}while(line!=null&&line.length()>0);
-//		while((line=reader.readLine())!=null){			
-//			bw.write(line);
-//			bw.newLine();
-//			count++;
-//			if(count>lineCount){
-//				bw.flush();
-//				bw.close();
-//				iterNum++;
-//				count = 0;
-//				outputfile = new File("/home/ljx/thesis/data/symbol_geneid_mapping_triple"+iterNum);
-//				bw = new BufferedWriter(new FileWriter(outputfile, true));
-//			}
-			
-//		}
-		
-		bw.flush();
-		bw.close();	
-		reader.close();
+		while((line=reader.readLine())!=null){
+			String[] triple = line.split("\t");
+			if(triple[0].contains("http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/id/medicine/"))
+				medicines.add(triple[0]);
+		}
+		System.out.println("---------------------"+medicines.size());
 	}
 	
-	
-	
 	public static void main(String[] args) throws IOException{
-		/*String path = "/home/ljx/thesis/data/TCMGeneDIT/";
-		String fileName = "TCM_disease_associations_statistics.rdf";
-		String tvalue = "http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/medicine_disease_tvalue";
-		String source = "http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/source";
-		Set<String> filterSet = new HashSet<String>();
-		filterSet.add(tvalue);
-		filterSet.add(source);
-		ConvertFileToTriple(path, fileName, filterSet, false);*/
-		//SimplizeTriple("/home/ljx/thesis/data/TCMGeneDIT/TCM_disease_associations_statistics_triple");
-		//writeMapping("/home/ljx/thesis/data/TCMGeneDIT/TCM_disease_associations_statistics_triple");
-		/*	test5.rdf  test690440.rdf  test3430700.rdf  test5730901.rdf   test8397700.rdf  test8537301.rdf */
-		//TranslateFile("/home/ljx/thesis/data/gene_symbol-id-mapping/test8537301.rdf");
-		SplitFile("/media/文档/uniprot/uniprot_protein_GO_mapping_triple",9000000);
+		CountTriple("/home/ljx/thesis/reason_data/TCMGeneDIT_triple");
 	}
 }

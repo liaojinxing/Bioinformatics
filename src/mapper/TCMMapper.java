@@ -20,8 +20,7 @@ public class TCMMapper extends Mapper<LongWritable, Text, Text, Triple> {
 			oKey.set(triple.getObject());
 			context.write(oKey, triple);
 		}
-		
-		//if (predicate.equals(TriplesUtils.S_RDFS_SUBCLASS)) {
+
 		if(TriplesUtils.subjectKeyPredicateSet.contains(predicate)){
 			oKey.set(triple.getSubject());
 			context.write(oKey, triple);

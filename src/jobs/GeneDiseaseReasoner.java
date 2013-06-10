@@ -67,7 +67,7 @@ public class GeneDiseaseReasoner {
 
 			FileSystem.get(job.getConfiguration()).delete(new Path(outputPath), true);
 			job.waitForCompletion(true);
-			//predicateNum=OWLRuleChainUtil.updatePredicateArr();
+
 			OWLRuleChainUtil.updatePredicateArrIntoFile();
 			predicateNum = (predicateNum+1)/2;
 			OWLRuleChainUtil.RefreshRuleList();

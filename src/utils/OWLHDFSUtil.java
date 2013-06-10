@@ -11,7 +11,9 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
-
+/***
+ * file manager for HDFS
+ */
 public class OWLHDFSUtil {
 
 	private FileSystem fs=null;
@@ -20,30 +22,21 @@ public class OWLHDFSUtil {
 		try {
 			this.fs=DistributedFileSystem.get(URI.create(hdfsSrv), new Configuration());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 	
-	/*
-	 * ���ļ�������һ��BufferedReader��ʵ����Ե������readline����ȡÿ�е����
-	 */
 	public BufferedReader readFile(String filePath){
 		FSDataInputStream in=null;
 		try {
 			in=this.fs.open(new Path(filePath));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new BufferedReader(new InputStreamReader(in));
 	}
 	
-	
-	/*
-	 * д�ļ�
-	 */
 	public void writeFile(String filePath,String content){
 		FSDataOutputStream out=null;
 		try {
@@ -52,7 +45,6 @@ public class OWLHDFSUtil {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

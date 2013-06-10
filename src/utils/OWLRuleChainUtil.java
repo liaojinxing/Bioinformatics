@@ -7,26 +7,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OWLRuleChainUtil {
-	private static String LOCALFILE="/user/ljx/rulechain";
-	private static String LOCALHDFS="hdfs://localhost:9000";
+	//private static String LOCALFILE="/user/ljx/rulechain";
+	//private static String LOCALHDFS="hdfs://localhost:9000";
 	
 	private static String CLUSTERFILE="/user/root/rulechain";
-	private static String CLUSTERHDFS="hdfs://192.168.0.236:9000";
+	private static String CLUSTERHDFS="hdfs://192.168.1.236:9000";
 	
 	private static String hdfsAddr=CLUSTERHDFS;
 	private static String rulechainFileAddr=CLUSTERFILE;
 	
-	// 存储rulechain所涉及到的全部predicate
+	// store the rule chain
 	private static LinkedList<String> ruleChainLst = new LinkedList<String>();
 	
-	// 从HDFS读取和写入数据的类
+	// tool class to read and write file in HDFS
 	private static OWLHDFSUtil owlFSTool = new OWLHDFSUtil(hdfsAddr);
-	// 临时用于去除重复数据，必须用一个全局性的变量，写到文件里
-	// 记录输出的结果，用于剔出重复数据，仅仅是在一个reducer中做到去重
+
+	// record the output result for deleting duplicates
 	public static List<String> proLst = new ArrayList<String>();
 	
-	
-	// 将rulechanin的所有内容载入内存，只需要读取初始的一次就可以了，之后所有的都已经载入到内存中了
 	static{	
 		/*
 		ruleChainLst.add("http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/treatment");
@@ -46,7 +44,6 @@ public class OWLRuleChainUtil {
 				ruleChainLst.add(tmp);
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -55,27 +52,37 @@ public class OWLRuleChainUtil {
 		
 	}
 	
-	//根据predicate的值获取它的index
+	/***
+	 * get the predicate index
+	 * @param pre
+	 * @return index
+	 */
 	public static int getIndexByPredicate(String pre){
 //		System.out.println("key:"+pre);
 		return ruleChainLst.indexOf(pre);
 	}
 
-	// 获取现存predicate的数目
+	/***
+	 *  get the number of rules
+	 * @return the rule chain length
+	 */
 	public static int getPredicateNum() {
 		return ruleChainLst.size();
 	}
 
-	// 更新predicate的数组，操作是将临近的两个单位合并为一个
+	/***
+	 *  update rule chain, merge the two ajacent rules
+	 * @return the new chain length
+	 */
 	public static int updatePredicateArr() {
 		LinkedList<String> tmpLst=new LinkedList<String>();
 		int size=ruleChainLst.size();
 		if(size==1)
 			return 1;
 		for(int i=0;i<size;i=i+2){
-			// 得到第一个predicate的值
+			// get the odd rule
 			String p1=ruleChainLst.get(i);
-			// 当size为奇数时，直接加入
+			// add the last one if the rule size is odd
 			if(i+1>=size){
 				tmpLst.add(p1);
 				break;
@@ -89,9 +96,10 @@ public class OWLRuleChainUtil {
 		return ruleChainLst.size();
 		
 	}
-	
-	// 将变更写入文件，为下次job作准备，写脚本时使用
-	
+
+	/***
+	 *  read rule chain file when beginning the next iteration
+	 */
 	public static void RefreshRuleList(){
 		ruleChainLst.clear();
 		BufferedReader br=owlFSTool.readFile(rulechainFileAddr);
@@ -109,14 +117,15 @@ public class OWLRuleChainUtil {
 		br=null;
 	}
 	
-	
+	/***
+	 * update rule chain file 
+	 */
 	public static void updatePredicateArrIntoFile() {
 		int size=ruleChainLst.size();
 		String writeCon="";
 		for(int i=0;i<size;i=i+2){
-			// 得到第一个predicate的值
 			String p1=ruleChainLst.get(i);
-			// 当size为奇数时，直接加入
+
 			if(i+1>=size){
 				writeCon+=p1+"\n";
 				break;
@@ -124,16 +133,16 @@ public class OWLRuleChainUtil {
 			String p2=ruleChainLst.get(i+1);
 			writeCon+=p1+"$$"+p2+"\n";
 		}
-		//更新完后，写回文件，为下一次job做准备
+
 		owlFSTool.writeFile(rulechainFileAddr, writeCon);
-		//return ruleChainLst.size();
 	}
 	
-	//由index得到相应的predicate
+	/***
+	 * get the predicate according to the index
+	 * @param i
+	 * @return
+	 */
 	public static String getPredicateByIndex(int i) {
 		return ruleChainLst.get(i);
 	}
-	
-
-
 }

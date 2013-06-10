@@ -15,11 +15,9 @@ public class GeneDiseaseMapper extends Mapper<Object, Text, Text, Text>{
 	protected void map(Object key, Text value,
 			GeneDiseaseMapper.Context context)
 			throws IOException, InterruptedException {
-//		System.err.println(value.toString());
 		Triple triple=TripleTool.parseLineToTriple(value.toString());
 		//get the index of the predicate of the triple
 		if(triple==null){
-			//System.out.println("----------------------------------------hehe,null");
 			return;
 		}
 		int pIndex=OWLRuleChainUtil.getIndexByPredicate(triple.getPredicate());

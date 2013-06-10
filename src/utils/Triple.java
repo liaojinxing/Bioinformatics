@@ -7,7 +7,9 @@ import java.io.Serializable;
 
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
-
+/***
+ * Triple Class, (subject,predicate,object)
+ */
 public class Triple implements WritableComparable<Triple>, Serializable {
 
 	private static final long serialVersionUID = 7578125506159351415L;

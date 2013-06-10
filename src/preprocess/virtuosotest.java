@@ -13,7 +13,7 @@ import java.util.List;
 public class virtuosotest {
 	private static final String OUTPUTFILE = "/home/ljx/thesis/data/TCMGeneDIT/TCMGeneDIT_triple";
 	
-	public static void prnRs(ResultSet rs, String outputFileName)
+	public static void WriteTripleToFile(ResultSet rs, String outputFileName)
 	 {
 	   try {
 		 //File file = new File(OUTPUTFILE);
@@ -59,8 +59,8 @@ public class virtuosotest {
 				String sql = "SPARQL SELECT distinct ?h WHERE {<http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/id/medicine/Ganoderma_lucidum> <http://purl.org/net/tcm/tcm.lifescience.ntu.edu.tw/treatment> ?b . ?b <http://www.w3.org/2002/07/owl#sameAs> ?c .?c <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/possibleDrug> ?d .?d <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/target> ?e .?e <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/swissprotId> ?f .?f <http://purl.uniprot.org/core/classifiedWith> ?g .?g <http://www.ccnt.org/symbol> ?h.};";
 				ResultSet rs = stmt.executeQuery(sql);
 				//ResultSet rs = stmt.executeQuery("SPARQL select * from <"+graphPrefix+graphName+"> where {?s ?p ?o}");
-				String filePrefix = "/home/ljx/thesis/reason_data/";
-				prnRs(rs, "/home/ljx/thesis/reason_data/lingzhi");
+				//String filePrefix = "/home/ljx/thesis/reason_data/";
+				WriteTripleToFile(rs, "/home/ljx/thesis/reason_data/lingzhi");
 			//	prnRs(rs, filePrefix + graphName);
 		//	}
 			
